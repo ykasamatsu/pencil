@@ -6,6 +6,7 @@ import { InputMng } from "./Lib/InputMng";
 import { Point } from "./Lib/Point";
 import { OperationMng } from "./Operation/OperationMng";
 import { SymbolMng } from "./Symbol/SymbolMng";
+import { Popup } from "./UI/Popup";
 import { UI } from "./UI/UI";
 
 document.addEventListener('DOMContentLoaded', e => {
@@ -14,6 +15,7 @@ document.addEventListener('DOMContentLoaded', e => {
 	new InputMng()
 	new OperationMng()
 	new SymbolMng()
+	new Popup()
 
 	const sizeSelector = document.getElementById('size-selector') as HTMLSelectElement;
 	if (sizeSelector) {
