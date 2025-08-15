@@ -44,10 +44,17 @@ export class Board extends SvgObject {
 		this.addChild(this.symbolMapObject)
 	}
 
-	init() {
-		this.initCellMap()
-		this.initEdgeMap()
-		this.initInput()
+	init(size?: number) {
+		this.clear();
+		this.initCellMap(size);
+		this.initEdgeMap();
+		this.initInput();
+	}
+
+	clear() {
+		this.cellMapObject.removeChildren();
+		this.edgeMapObject.removeChildren();
+		this.symbolMapObject.removeChildren();
 	}
 
 	initInput() {
@@ -66,7 +73,7 @@ export class Board extends SvgObject {
 
 	}
 
-	initCellMap() {
+	initCellMap(size?: number) {
 	}
 
 	initEdgeMap() {

@@ -25,10 +25,10 @@ export class BoardBinairo extends Board {
 		}
 	}
 
-	initCellMap() {
-		// Use fixed size for now
-		this.w = 6;
-		this.h = 6;
+	initCellMap(size: number = 6) {
+		// Set board size from parameter
+		this.w = size;
+		this.h = size;
 
 		this.elem.setAttribute("w", `${this.w}`);
 		this.elem.setAttribute("h", `${this.h}`);
