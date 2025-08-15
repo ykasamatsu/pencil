@@ -1,12 +1,12 @@
 import { Board } from "../../Board/Board";
-import { BoardNormal } from "../../Board/BoardNormal";
+import { BoardBinairo } from "../../Board/BoardBinairo";
 import { Popup } from "../Popup";
 import { Btn } from "./Btn";
 
 export class HintBtn extends Btn {
 
 	onClick() {
-		const board = Board.main as BoardNormal;
+		const board = Board.main as BoardBinairo;
 		if (!board.getHint) return;
 
 		const hint = board.getHint();
