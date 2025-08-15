@@ -112,8 +112,7 @@ export class CellObject extends SvgObject {
 	}
 
 	setHint() {
-		// this.addChild(new SvgRect(this.cell.x + 0.2, this.cell.y + 0.2, 0.6, 0.6))
-		// this.addChild(new SvgCircle(this.cell.x + 0.5, this.cell.y + 0.5, 0.3))
+		this.setAttribute("hint", "");
 	}
 
 	updateState(state: number) {
