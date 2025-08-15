@@ -1,3 +1,4 @@
+import { PuzzleGenerator } from "../logic/PuzzleGenerator";
 import { Point } from "../Lib/Point";
 import { Util } from "../Lib/Util";
 import { Board } from "./Board";
@@ -25,51 +26,52 @@ export class BoardBinairo extends Board {
 	}
 
 	initCellMap() {
-		let data: number[] = Util.toNumber64(this.elem.getAttribute("data"))
-		this.w = +this.elem.getAttribute("w")
-		this.h = +this.elem.getAttribute("h")
+		// Use fixed size for now
+		this.w = 6;
+		this.h = 6;
 
+		this.elem.setAttribute("w", `${this.w}`);
+		this.elem.setAttribute("h", `${this.h}`);
 		this.elem.setAttribute("viewBox", `0 0 ${this.w} ${this.h}`);
 
-		this.cellMap = new CellMap(this.w, this.h)
+		this.cellMap = new CellMap(this.w, this.h);
 
-		//init
-		for (let x = 0; x < this.w; x++) {
+		// Initialize CellObjects
+		for (let y = 0; y < this.h; y++) {
+			for (let x = 0; x < this.w; x++) {
+				let cell = this.cellMap.get(x, y);
+				let cellObject = new CellObject(cell);
+				this.cellMapObject.addChild(cellObject);
+			}
+		}
+
+		// Generate a new puzzle with a unique solution
+		const generator = new PuzzleGenerator();
+		const puzzle = generator.generatePuzzle(this.w, this.h);
+
+		if (puzzle) {
+			// Set cell states from the generated puzzle
 			for (let y = 0; y < this.h; y++) {
-				let cell = this.cellMap.get(x, y)
-				let cellObject = new CellObject(cell)
-				this.cellMapObject.addChild(cellObject)
-			}
-		}
-
-		//set
-		let cellIndex = 0
-		let state = 0
-		let repeat = 0
-		for (let i = 0; i < data.length; i++) {
-			let value = data[i]
-			let cell = this.cellMap[cellIndex]
-
-			if (repeat == 0) {
-				if (value >= 62) {
-					state = CellState.Empty
-				} else if (value >= 54) {
-					repeat = value - 53
-				} else {
-					state = value
+				for (let x = 0; x < this.w; x++) {
+					const cell = this.cellMap.get(x, y);
+					const state = puzzle[y][x];
+					cell.object.updateState(state);
+					// Lock the pre-filled cells, leave empty ones unlocked
+					if (state !== CellState.Empty) {
+						cell.object.lock(true);
+					} else {
+						cell.object.lock(false);
+					}
 				}
-			} else {
-				repeat--
-				i--
 			}
-
-			if (state != CellState.Empty) {
-				cell.object.updateState(state)
-				cell.object.lock(true)
-			}
-
-			cellIndex++
+		} else {
+			console.error("Failed to generate puzzle.");
 		}
+	}
+
+	onCellChange(): void {
+		// Future: Add rule validation logic here
+		console.log("Cell changed. Board validation should run.");
 	}
 
 	initEdgeMap() {
