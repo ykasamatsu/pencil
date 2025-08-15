@@ -12,6 +12,10 @@ export class GameObject {
 		this.elem.append(child.elem)
 	}
 
+	removeChildren() {
+		this.elem.innerHTML = '';
+	}
+
 	addClass(name: string) {
 		this.elem.classList.add(name)
 	}

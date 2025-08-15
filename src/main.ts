@@ -15,6 +15,16 @@ document.addEventListener('DOMContentLoaded', e => {
 	new OperationMng()
 	new SymbolMng()
 
+	const sizeSelector = document.getElementById('size-selector') as HTMLSelectElement;
+	if (sizeSelector) {
+		sizeSelector.addEventListener('change', (event) => {
+			const newSize = parseInt((event.target as HTMLSelectElement).value, 10);
+			if (Board.main && !isNaN(newSize)) {
+				Board.main.init(newSize);
+			}
+		});
+	}
+
 	// SymbolMng.I.addAreaSymbol(Board.main.edgeMap.getByCell(7, 0), 2)
 });
 
