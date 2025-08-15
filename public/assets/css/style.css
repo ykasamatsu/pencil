@@ -1,0 +1,575 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: sans-serif;
+}
+
+.light {
+  --bg: rgb(200, 200, 200);
+  --bg2: rgba(0, 0, 0, 0.85);
+  --main: rgb(0, 0, 0);
+  --active: rgb(0, 0, 0);
+  --deactive: rgb(150, 150, 150);
+  --cellBorder: rgb(0, 0, 0);
+  --stateEmpty: rgb(180, 180, 180);
+  --stateColored: rgb(255, 42, 121);
+  --stateWhite: rgb(255, 255, 255);
+}
+
+.dark {
+  --bg: rgb(100, 100, 100);
+  --bg2: rgba(100, 100, 100, 0.9);
+  --main: rgb(240, 240, 240);
+  --active: rgb(240, 240, 240);
+  --deactive: rgb(85, 85, 85);
+  --cellBorder: rgb(0, 0, 0);
+  --stateEmpty: rgb(100, 100, 100);
+  --stateColored: rgb(225, 32, 111);
+  --stateWhite: rgb(235, 235, 235);
+}
+
+.test {
+  --bg: rgb(160, 160, 160);
+  --bg2: rgba(160, 160, 160, 0.9);
+  --main: rgb(255, 255, 255);
+  --active: rgb(240, 240, 240);
+  --deactive: rgb(85, 85, 85);
+  --cellBorder: rgb(0, 0, 0);
+  --stateEmpty: rgb(160, 160, 160);
+  --stateColored: rgb(80, 80, 80);
+  --stateWhite: rgb(230, 230, 230);
+}
+
+body {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: var(--bg);
+}
+
+header {
+  position: relative;
+  height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+}
+header h1 {
+  line-height: 1;
+}
+
+#game {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  padding: 80px 5%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#rules {
+  -webkit-tap-highlight-color: transparent;
+  position: fixed;
+  top: 0;
+  right: -300px;
+  width: 100%;
+  max-width: 300px;
+  transition: right 0.2s;
+  -webkit-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  color: #fff;
+  background: var(--bg2);
+  height: 100svh;
+  z-index: 3;
+}
+#rules[open] {
+  right: 0;
+}
+#rules h3 {
+  color: var(--cellBorder);
+  font-size: 20px;
+}
+#rules .rules {
+  max-height: calc(100svh - 60px);
+  overflow: auto;
+  padding: 10px 0;
+  margin-top: 60px;
+}
+#rules .rule {
+  font-weight: bold;
+  text-align: left;
+  color: #fff;
+  padding: 15px;
+  border-bottom: 1px solid #888;
+  line-height: 1.5;
+}
+#rules .rule:last-child {
+  border-bottom: none;
+}
+#rules .rule h4 {
+  margin-bottom: 15px;
+  font-size: 14px;
+  color: #aea;
+}
+#rules .rule h4 span {
+  font-size: 0.75em;
+}
+#rules .rule ._text {
+  font-size: 14px;
+}
+#rules .rule ._text span {
+  font-size: 0.75em;
+}
+#rules .rule .boards {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin: 20px 0 5px;
+}
+#rules .rule .boards .board {
+  margin: 0;
+  min-width: 0;
+}
+#rules .rule .boards .board[w="0"] {
+  width: 0px;
+}
+#rules .rule .boards .board[h="0"] {
+  height: 0px;
+}
+#rules .rule .boards .board[w="1"] {
+  width: 20px;
+}
+#rules .rule .boards .board[h="1"] {
+  height: 20px;
+}
+#rules .rule .boards .board[w="2"] {
+  width: 40px;
+}
+#rules .rule .boards .board[h="2"] {
+  height: 40px;
+}
+#rules .rule .boards .board[w="3"] {
+  width: 60px;
+}
+#rules .rule .boards .board[h="3"] {
+  height: 60px;
+}
+#rules .rule .boards .board[w="4"] {
+  width: 80px;
+}
+#rules .rule .boards .board[h="4"] {
+  height: 80px;
+}
+#rules .rule .boards .board[w="5"] {
+  width: 100px;
+}
+#rules .rule .boards .board[h="5"] {
+  height: 100px;
+}
+#rules .rule .boards .board[w="6"] {
+  width: 120px;
+}
+#rules .rule .boards .board[h="6"] {
+  height: 120px;
+}
+#rules .rule .boards .board[w="7"] {
+  width: 140px;
+}
+#rules .rule .boards .board[h="7"] {
+  height: 140px;
+}
+#rules .rule .boards .board[w="8"] {
+  width: 160px;
+}
+#rules .rule .boards .board[h="8"] {
+  height: 160px;
+}
+#rules .rule .boards .board + .board {
+  margin-left: 30px;
+}
+#rules .rule .boards .board .cell[state="2"] {
+  display: none;
+}
+#rules .rule i {
+  display: inline-block;
+  width: 0.9em;
+  height: 0.9em;
+  background: #aaa;
+  margin: 0 3px;
+}
+#rules .rule i[state="0"] {
+  background: var(--stateColored);
+}
+#rules .rule i[state="1"] {
+  background: var(--stateWhite);
+}
+#rules .examples {
+  padding-left: 10px;
+}
+#rules .example {
+  display: flex;
+}
+#rules .example .boards {
+  width: 150px;
+}
+#rules .example ._text {
+  padding-left: 20px;
+}
+
+#menus {
+  -webkit-tap-highlight-color: transparent;
+  position: fixed;
+  top: 0;
+  left: -300px;
+  width: 100%;
+  max-width: 300px;
+  transition: left 0.2s;
+  -webkit-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  color: #fff;
+  background: var(--bg2);
+  height: 100svh;
+  z-index: 3;
+}
+#menus[open] {
+  left: 0;
+}
+#menus h3 {
+  color: var(--cellBorder);
+  font-size: 20px;
+}
+#menus .menus {
+  max-height: calc(100svh - 60px);
+  overflow: auto;
+  padding: 10px;
+  margin-top: 60px;
+}
+#menus .menu {
+  font-weight: bold;
+  text-align: left;
+  color: #fff;
+  padding: 10px 15px 15px;
+  border-bottom: 1px solid #888;
+  line-height: 1.5;
+}
+#menus .menu:last-child {
+  border-bottom: none;
+}
+#menus .menu h4 {
+  margin-bottom: 15px;
+  font-size: 14px;
+  color: #aea;
+}
+#menus .menu h4 span {
+  font-size: 0.75em;
+}
+#menus .menu ._text {
+  font-size: 14px;
+}
+#menus .menu ._text span {
+  font-size: 0.75em;
+}
+#menus .menu .boards {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px 0;
+}
+#menus .menu .boards .board {
+  margin: 0;
+  min-width: 0;
+}
+#menus .menu .boards .board[w="0"] {
+  width: 0px;
+}
+#menus .menu .boards .board[h="0"] {
+  height: 0px;
+}
+#menus .menu .boards .board[w="1"] {
+  width: 20px;
+}
+#menus .menu .boards .board[h="1"] {
+  height: 20px;
+}
+#menus .menu .boards .board[w="2"] {
+  width: 40px;
+}
+#menus .menu .boards .board[h="2"] {
+  height: 40px;
+}
+#menus .menu .boards .board[w="3"] {
+  width: 60px;
+}
+#menus .menu .boards .board[h="3"] {
+  height: 60px;
+}
+#menus .menu .boards .board[w="4"] {
+  width: 80px;
+}
+#menus .menu .boards .board[h="4"] {
+  height: 80px;
+}
+#menus .menu .boards .board[w="5"] {
+  width: 100px;
+}
+#menus .menu .boards .board[h="5"] {
+  height: 100px;
+}
+#menus .menu .boards .board[w="6"] {
+  width: 120px;
+}
+#menus .menu .boards .board[h="6"] {
+  height: 120px;
+}
+#menus .menu .boards .board[w="7"] {
+  width: 140px;
+}
+#menus .menu .boards .board[h="7"] {
+  height: 140px;
+}
+#menus .menu .boards .board[w="8"] {
+  width: 160px;
+}
+#menus .menu .boards .board[h="8"] {
+  height: 160px;
+}
+#menus .menu .boards .board[w="9"] {
+  width: 180px;
+}
+#menus .menu .boards .board[h="9"] {
+  height: 180px;
+}
+#menus .menu .boards .board[w="10"] {
+  width: 200px;
+}
+#menus .menu .boards .board[h="10"] {
+  height: 200px;
+}
+#menus .menu .boards .board[w="11"] {
+  width: 220px;
+}
+#menus .menu .boards .board[h="11"] {
+  height: 220px;
+}
+#menus .menu .boards .board[w="12"] {
+  width: 240px;
+}
+#menus .menu .boards .board[h="12"] {
+  height: 240px;
+}
+#menus .menu .boards .board + .board {
+  margin-left: 30px;
+}
+#menus .menu .boards .board .cell[state="2"] {
+  display: none;
+}
+#menus .menu i {
+  display: inline-block;
+  width: 0.9em;
+  height: 0.9em;
+  background: #aaa;
+  margin: 0 3px;
+}
+#menus .menu i[state="0"] {
+  background: var(--stateColored);
+}
+#menus .menu i[state="1"] {
+  background: var(--stateWhite);
+}
+
+.board {
+  margin: 10px auto;
+  -webkit-tap-highlight-color: transparent;
+  display: block;
+  overflow: visible;
+  -webkit-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  max-height: 65%;
+}
+.board #border {
+  stroke: rgba(0, 100, 255, 0.8);
+  fill: none;
+  stroke-linejoin: round;
+}
+
+.cell {
+  stroke: none;
+  fill: var(--stateEmpty);
+}
+[touchable] .cell {
+  cursor: pointer;
+}
+.cell[state="0"] {
+  fill: var(--stateColored);
+}
+.cell[state="1"] {
+  fill: var(--stateWhite);
+}
+@media screen and (min-width: 901px) {
+  .cell.hover {
+    -webkit-filter: brightness(1.05);
+            filter: brightness(1.05);
+  }
+}
+.cell rect {
+  stroke: rgba(0, 0, 0, 0.5);
+  stroke-width: 0.1;
+}
+.cell[lock].hover {
+  -webkit-filter: contrast(1);
+          filter: contrast(1);
+}
+.cell[lock] .overlay {
+  stroke: none;
+  fill-opacity: 0.05;
+}
+.cell[hint] .overlay {
+  stroke: none;
+  fill: url(#hintIcon);
+  fill-opacity: 0.9;
+}
+
+.edge {
+  pointer-events: none;
+  -webkit-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  stroke: var(--cellBorder);
+  stroke-width: 0.025;
+  pointer-events: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+}
+.edge[border] {
+  stroke: var(--cellBorder);
+  stroke-width: 0.1;
+}
+.edge[union] {
+  stroke: rgba(0, 0, 0, 0.05);
+}
+
+.symbol {
+  pointer-events: none;
+  -webkit-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+.symbol text {
+  dominant-baseline: central;
+  text-anchor: middle;
+  font-weight: bold;
+  font-size: 0.4px;
+}
+.symbol circle {
+  fill: #f55;
+  stroke: rgb(0, 0, 0);
+  stroke-width: 0.05;
+}
+.symbol.area rect {
+  fill: none;
+  stroke-width: 0.025;
+  stroke: #000;
+}
+.symbol.area text {
+  font-size: 0.65px;
+  font-weight: 500;
+}
+
+.head_btn {
+  position: fixed;
+  line-height: 1;
+  text-align: center;
+  z-index: 4;
+  top: 10px;
+  -webkit-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  padding: 0 10px;
+}
+.head_btn .name {
+  font-size: 14px;
+  color: var(--main);
+}
+.head_btn .icon {
+  width: 40px;
+  margin: 0 auto;
+  fill: var(--main);
+}
+.head_btn .icon.open {
+  display: none;
+}
+.head_btn[open] .name {
+  font-size: 14px;
+  color: #fff;
+}
+.head_btn[open] .icon {
+  width: 40px;
+  margin: 0 auto;
+  fill: #fff;
+}
+.head_btn[open] .icon.open {
+  display: block;
+}
+.head_btn[open] .icon.close {
+  display: none;
+}
+
+#rule_btn {
+  right: 10px;
+}
+
+#menu_btn {
+  left: 10px;
+}
+
+.btns {
+  position: fixed;
+  z-index: 1;
+  width: 100%;
+  height: 80px;
+  bottom: 0;
+  display: flex;
+  margin: 0 auto;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+  color: var(--active);
+}
+
+.btn {
+  cursor: pointer;
+  -webkit-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  margin: 0 10px;
+  font-size: 14px;
+  width: 25%;
+  text-align: center;
+  max-width: 80px;
+  line-height: 1;
+  padding: 10px 0;
+}
+.btn[deactive] {
+  color: var(--deactive);
+  cursor: default;
+}
+.btn .icon {
+  width: 50%;
+  margin: 5px auto 0;
+}
+
+#redo .icon {
+  -webkit-transform: scaleX(-1);
+          transform: scaleX(-1);
+}

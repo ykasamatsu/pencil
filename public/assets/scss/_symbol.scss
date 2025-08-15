@@ -1,0 +1,31 @@
+@charset "utf-8";
+
+.symbol{
+	pointer-events:none;
+	user-select: none;
+	text{
+		dominant-baseline: central;
+		text-anchor: middle;
+		font-weight:bold;
+		font-size:0.4px;
+		// fill:none;
+	}
+	circle{
+		fill:#f55;
+		// fill:var(--stateColored);
+		stroke:rgba(0,0,0,1);
+		stroke-width:0.05;
+	}
+
+	&.area{
+		rect{
+			fill:none;
+			stroke-width:0.025;
+			stroke:#000;
+		}
+		text{
+			font-size:0.65px;
+			font-weight:500;
+		}
+	}
+}
